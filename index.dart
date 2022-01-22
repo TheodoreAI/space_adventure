@@ -16,16 +16,19 @@ class Spaceship {
   String name = '';
   String klass = '';
   int? numberOfCabins;
+  String names = '';
 
   // Initialization lists with multiple instance variables
-  Spaceship()
-      : name = 'No name',
-        klass = 'Unspecified',
-        numberOfCabins = 1;
-  // Initialization formal with multiple instance variables
-  Spaceship.withDetails(this.name, this.klass, this.numberOfCabins);
+  // Spaceship()
+  //     : name = 'No name',
+  //       klass = 'Unspecified',
+  //       numberOfCabins = 1;
+  // // Initialization formal with multiple instance variables
+  // Spaceship.withDetails(this.name, this.klass, this.numberOfCabins);
 
-  void battle(Spaceship other) {
-    print('pew! pew!');
-  }
+  // void battle(Spaceship other) {
+  //   print('pew! pew!');
+  // }
+
+  Spaceship(this.names);
 }

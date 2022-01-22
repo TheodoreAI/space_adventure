@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:main/dart_space_adventure.dart';
 import 'planetary_system.dart';
 
 class SpaceAdventure {
-  PlanetarySystem planetarySystem;
+  final PlanetarySystem planetarySystem;
   SpaceAdventure({required this.planetarySystem});
 
   void start() {
@@ -17,8 +18,7 @@ class SpaceAdventure {
 
   void printGreeting() {
     print('Welcome to the ${planetarySystem.name}');
-    print('Welcome to the solar system!');
-    print('There are 8 planets');
+    print('There are ${planetarySystem.numberOfPlanets} planets');
   }
 
   String responseToPrompt(String prompt) {
@@ -31,11 +31,17 @@ class SpaceAdventure {
   }
 
   void travelToRandomPlanet() {
-    print('Okay we will travel to Earth.');
+    final index = Random().nextInt(planetarySystem.numberOfPlanets);
+    travelTo(planetarySystem.planets[index].name);
   }
 
-  void travelTo(String planetName) {
-    print('You will visit $planetName \n');
+  void travelTo(String destination) {
+    print('Traveling to $destination...');
+    planetarySystem.planets.forEach((planet) {
+      if (planet.name == destination) {
+        print('Arrived at ${planet.name}. ${planet.description}');
+      }
+    });
   }
 
   void travel(bool randomDestination) {
