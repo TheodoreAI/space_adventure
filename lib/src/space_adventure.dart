@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:main/dart_space_adventure.dart';
-import 'planetary_system.dart';
 
 class SpaceAdventure {
   final PlanetarySystem planetarySystem;
@@ -11,9 +9,13 @@ class SpaceAdventure {
   void start() {
     printGreeting();
     printIntroduction(responseToPrompt("What is your name?"));
-    print('Let\'s go on an adventure \n');
-    travel(promptForRandomOrSpecificDestiantion(
-        'Shall I randomly choose a planet for you to visit? (YES or NO)'));
+    print('Let\'s go on an adventure!');
+    if (planetarySystem.hasPlanets) {
+      travel(promptForRandomOrSpecificDestiantion(
+          'Shall I randomly choose a planet for you to visit? (YES or NO)'));
+    } else {
+      print('Aw, there are no Planets to explore.');
+    }
   }
 
   void printGreeting() {
@@ -27,29 +29,23 @@ class SpaceAdventure {
   }
 
   void printIntroduction(String name) {
-    print('Hello $name my name is Juno and I am your new pilot.\n');
+    print('Hello $name my name is Juno and I am your new pilot.');
   }
 
-  void travelToRandomPlanet() {
-    final index = Random().nextInt(planetarySystem.numberOfPlanets);
-    travelTo(planetarySystem.planets[index].name);
-  }
-
-  void travelTo(String destination) {
-    print('Traveling to $destination...');
-    planetarySystem.planets.forEach((planet) {
-      if (planet.name == destination) {
-        print('Arrived at ${planet.name}. ${planet.description}');
-      }
-    });
+  void travelTo(Planet planet) {
+    print('Traveling to ${planet.name}');
+    print('Arrived at ${planet.name}. ${planet.description}.');
   }
 
   void travel(bool randomDestination) {
+    Planet planet;
     if (randomDestination) {
-      travelToRandomPlanet();
+      planet = planetarySystem.randomPlanet();
     } else {
-      travelTo(responseToPrompt('Name the planet you would like to visit:'));
+      planet = planetarySystem.planetWithName(
+          responseToPrompt('Name the planet you would like to visit:'));
     }
+    travelTo(planet);
   }
 
   bool promptForRandomOrSpecificDestiantion(String prompt) {

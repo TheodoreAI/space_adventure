@@ -1,22 +1,24 @@
-import 'package:main/dart_space_adventure.dart';
+import 'dart:io';
 
-void main(List<String> arguments) {
+import 'package:main/dart_space_adventure.dart';
+import 'dart:convert' show jsonDecode;
+
+Future<void> main(List<String> arguments) async {
+  var planetarySystem =
+      jsonDecode(await File('planetarySystem.json').readAsString());
+  var planets = planetarySystem['planets'];
+  var systemName = planetarySystem['name'];
+  final Map<String, String> planetsObj = {};
+  planets.forEach((p) => planetsObj[p['name']] = p['description']);
+
   List<Planet> mockPlanets() {
-    return [
-      Planet(name: 'Mercury', description: ' Closes to the Sun, very hot.'),
-      Planet(name: 'Venus', description: 'It\'s very cloudy here'),
-      Planet(name: 'Earth', description: 'The gettho of the Solar System'),
-      Planet(name: 'Mars', description: 'The Red planet'),
-      Planet(name: 'Jupiter', description: 'The gas giant'),
-      Planet(name: 'Saturn', description: 'This one has several marriages'),
-      Planet(name: 'Uranus', description: 'Rotates weird'),
-      Planet(name: 'Neptune', description: 'Cold as hell here'),
-      Planet(name: 'Pluto', description: 'He is a planet')
-    ];
+    return planetsObj.entries
+        .map((e) => Planet(name: e.key, description: e.value))
+        .toList();
   }
 
   SpaceAdventure(
           planetarySystem:
-              PlanetarySystem(name: "Solar System", planets: mockPlanets()))
+              PlanetarySystem(name: systemName, planets: mockPlanets()))
       .start();
 }
